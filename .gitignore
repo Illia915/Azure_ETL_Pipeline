@@ -1,0 +1,21 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.log
+bin/
+
+# Virtual environments
+.venv
+
+# Terraform configuration 
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+
+# Additional 
+notes.md 
