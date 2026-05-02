@@ -1,0 +1,10 @@
+bundle:
+  name: azure-etl-pet-project
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    workspace:
+      
