@@ -1,0 +1,37 @@
+resources:
+  jobs:
+    source_to_bronze_streaming:
+      name: "Source_To_Bronze_Streaming"
+      format: MULTI_TASK
+      max_concurrent_runs: 1
+      performance_target: PERFORMANCE_OPTIMIZED
+
+      queue:
+        enabled: true
+
+      tasks:
+        - task_key: set_parameters
+          existing_cluster_id: "0503-124356-4n6kkbxo"
+          run_if: ALL_SUCCESS
+          notebook_task:
+            notebook_path: ../src/notebooks/utils/source_to_bronze_params.ipynb
+            source: "WORKSPACE"
+
+        - task_key: source_to_bronze
+          run_if: ALL_SUCCESS
+          depends_on:
+            - task_key: set_parameters
+          for_each_task:
+            inputs: "{{tasks.set_parameters.values.datasets_properties}}"
+            task:
+              task_key: source_to_bronze_iteration
+              existing_cluster_id: "0503-124356-4n6kkbxo"
+              run_if: ALL_SUCCESS
+              notebook_task:
+                notebook_path: ../src/notebooks/source_to_bronze_incremental.ipynb
+                source: "WORKSPACE"
+                base_parameters:
+                  dst_container: "{{input.dst_container}}"
+                  sa_name: "{{input.sa_name}}"
+                  src_container: "{{input.src_container}}"
+                  table_name: "{{input.table_name}}"

@@ -22,6 +22,3 @@ terraform/.terraform/
 
 # Additional 
 notes.md 
-
-# Paths & Credentials configs
-src/notebooks/utils/*
